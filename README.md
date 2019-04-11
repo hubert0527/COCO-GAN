@@ -1,6 +1,11 @@
 # COCO-GAN
 
+COCO-GAN: Generation by Parts via Conditional Coordinating
+
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/coco-gan-generation-by-parts-via-conditional/image-generation-celeba)](https://paperswithcode.com/sota/image-generation-celeba?p=coco-gan-generation-by-parts-via-conditional)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/coco-gan-generation-by-parts-via-conditional/image-generation-lsun-bedroom-256-x-256)](https://paperswithcode.com/sota/image-generation-lsun-bedroom-256-x-256?p=coco-gan-generation-by-parts-via-conditional)
 
-COCO-GAN: Generation by Parts via Conditional Coordinating
+[**\[Project Page\]**](https://hubert0527.github.io/COCO-GAN/)
+[**\[Paper\]**](https://arxiv.org/abs/1904.00284)
+[**\[Paper (Full Resolution)\]**](https://goo.gl/5HLynv)
+

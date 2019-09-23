@@ -1,0 +1,54 @@
+data_params:
+  # dataset options: "celeba", "celeba-syn-inward", "celeba-syn-outward", "celeba-hq", "lsun", "mp3d",
+  dataset: "celeba"
+  c_dim: 3
+  full_image_size: [64, 64] # [height, width], supports x!=y
+  macro_patch_size: [32, 32] # Ideally supports x!=y, but I have never used it
+  micro_patch_size: [16, 16] # Ideally supports x!=y, but I have never used it
+  num_train_samples: 152599 # i.e., 202599-50000
+  num_test_samples: 50000
+  coordinate_system: "euclidean"
+  
+train_params:
+  epochs: inf # No need to specify, usually longer better, and eventually saturates
+  batch_size: 64
+  G_update_period: 1
+  D_update_period: 1
+  Q_update_period: 0
+  beta1: 0.0
+  beta2: 0.999
+  glr: 0.0001
+  dlr: 0.0004
+  qlr: 0.0001
+  # Extrapolation post-training args
+  train_extrap: False
+  # Force loading from this ckpt, otherwise, auto detect
+  force_load_from_dir: False
+
+loss_params:
+  gp_lambda: 10
+  coord_loss_w: 100
+  code_loss_w: 0
+
+model_params:
+  z_dim: 128
+  spatial_dim: 2
+  g_extra_layers: 0
+  d_extra_layers: 0
+  ngf_base: 64
+  ndf_base: 64
+  aux_dim: 128
+
+log_params:
+  exp_name: "CelebA_64x64_N2M2S32"
+  log_dir: "./logs/"
+
+  # Use inf to disable
+  log_step: 100
+  img_step: 1000 # Consumes quite much disk space
+  fid_step: 5000 # Consumes LOTS of time to compute (some computer takes ever)
+  ckpt_step: 5000
+  dump_img_step: 2000 # Consumes LOTS of disk space
+
+  # Use this argument when there are too many micro patches
+  merge_micro_patches_in_cpu: False

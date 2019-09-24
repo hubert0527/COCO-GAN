@@ -113,7 +113,7 @@ We provide following pretrained checkpoints:
 - LSUN_256x256_N2M2S128
 
 Please download them from: https://drive.google.com/drive/folders/1Mr5BknOrTebQgxdARxJVV95pZA-NkVXt?usp=sharing
-Then, you can use `force_load_from_dir=True` argument in each of the config file to load the parameters (this does not override the hyperparameters).
+Then, you can use `force_load_from_dir="path/to/the/pretrained/directory"` argument in each of the config file to load the parameters (this does not override the hyperparameters).
 
 Note:
 These models are trained with Tensorflow 1.13.0, you may potentially face some loading errors if you use other Tensorflow versions.

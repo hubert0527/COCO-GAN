@@ -82,25 +82,25 @@ This will generate statistic files under `./stats/`.
 ## 4. Training
 We provide the configurations for standard COCO-GAN training on CelebA, LSUN and Matterport3D:
 ```
-python train.py --config="./configs/CelebA_128x128_N2M2S64.yaml"
-python train.py --config="./configs/LSUN_256x256_N2M2S128.yaml"
-python train.py --config="./configs/MP3D_258x768_N2M2S128.yaml"
+python main.py --config="./configs/CelebA_128x128_N2M2S64.yaml"
+python main.py --config="./configs/LSUN_256x256_N2M2S128.yaml"
+python main.py --config="./configs/MP3D_258x768_N2M2S128.yaml"
 ```
 Note: `N,M` is the number of micro patches in a macro patch, `S` is the macro patch size. 
 
 CelebA-HQ is not well-tested (actually, we only tune the hyperparameters for CelebA):
 ```
-python train.py --config="./configs/CelebAHQ_1024x1024_N2M2S512.yaml"
+python main.py --config="./configs/CelebAHQ_1024x1024_N2M2S512.yaml"
 ```
 
 Also the extrapolation experiment (this requires a well-pretrained `LSUN_256x256_N2M2S128` checkpoint):
 ```
-python train.py --config="./configs/LSUN_256x256_N2M2S128_Extrapolation.yaml"
+python main.py --config="./configs/LSUN_256x256_N2M2S128_Extrapolation.yaml"
 ```
 
 With the **Patch-Guided Image Generation**, we need to train an additional critic `Q` by setting `Q_update_period=1` and `code_loss_w=100`. Here's an exmple config:
 ```
-python train.py --config="./configs/CelebA_128x128_N2M2S64_PatchGuidedGeneration.yaml"
+python main.py --config="./configs/CelebA_128x128_N2M2S64_PatchGuidedGeneration.yaml"
 ```
 
 ## Pretrained checkpoints

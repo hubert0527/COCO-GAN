@@ -88,16 +88,22 @@ python main.py --config="./configs/MP3D_258x768_N2M2S128.yaml"
 ```
 Note: `N,M` is the number of micro patches in a macro patch, `S` is the macro patch size. 
 
+---
+
 CelebA-HQ is not well-tested (actually, we only tune the hyperparameters for CelebA):
 ```
 python main.py --config="./configs/CelebAHQ_1024x1024_N2M2S512.yaml"
 ```
+
+---
 
 Also the extrapolation experiment (this requires a well-pretrained `LSUN_256x256_N2M2S128` checkpoint):
 ```
 python main.py --config="./configs/LSUN_256x256_N2M2S128_Extrapolation.yaml"
 ```
 Note: This experiment is a little unstable, I usually run 3 to 5 epochs and pick the best model by personal preference.
+
+---
 
 With the **Patch-Guided Image Generation**, we need to train an additional critic `Q` by setting `Q_update_period=1` and `code_loss_w=100`. Here's an exmple config:
 ```

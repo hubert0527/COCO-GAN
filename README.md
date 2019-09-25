@@ -97,6 +97,7 @@ Also the extrapolation experiment (this requires a well-pretrained `LSUN_256x256
 ```
 python main.py --config="./configs/LSUN_256x256_N2M2S128_Extrapolation.yaml"
 ```
+Note: This experiment is a little unstable, I usually run 3 to 5 epochs and pick the best model by personal preference.
 
 With the **Patch-Guided Image Generation**, we need to train an additional critic `Q` by setting `Q_update_period=1` and `code_loss_w=100`. Here's an exmple config:
 ```
@@ -114,7 +115,7 @@ We provide following pretrained checkpoints:
 
 Please download them from: https://drive.google.com/drive/folders/1Mr5BknOrTebQgxdARxJVV95pZA-NkVXt?usp=sharing
 
-Then, you can use `force_load_from_dir="path/to/the/pretrained/directory"` argument in each of the config file to load the parameters (this does not override the hyperparameters).
+Then, you can use `force_load_from_dir: "path/to/the/pretrained/directory"` argument in each of the config file to load the parameters (this does not override the hyperparameters).
 
 Note:
 These models are trained with Tensorflow 1.13.0, you may potentially face some loading errors if you use other Tensorflow versions.

@@ -49,11 +49,12 @@ class DiscriminatorBuilder(Model):
             num_resize_layers = int(math.log(min(self.macro_patch_size), 2) - 1)
             num_total_layers  = num_resize_layers + self.num_extra_layers
             basic_layers = [2, 4, 8, 8]
-            if num_total_layers>=len(basic_layers):
+            if num_total_layers>len(basic_layers):
                 num_replicate_layers = num_total_layers - len(basic_layers)
                 ndf_mult_list = [1, ] * num_replicate_layers + basic_layers
             else:
                 ndf_mult_list = basic_layers[-num_total_layers:]
+                ndf_mult_list[0] = 1
             print("\t ndf_mult_list = {}".format(ndf_mult_list))
 
             # Stack extra layers without resize first

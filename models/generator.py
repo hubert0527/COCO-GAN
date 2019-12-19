@@ -49,8 +49,8 @@ class GeneratorBuilder(Model):
             gamma = tf.reshape(gamma, [-1, 1, 1, ch])
             beta  = tf.reshape(beta , [-1, 1, 1, ch])
             
-            out = (x-mean) / (var+_EPS) * gamma + beta
-            return out 
+            h = (x-mean) / tf.sqrt(var**2+_EPS) 
+            return h * gamma + beta
 
     def _g_residual_block(self, x, y, n_ch, idx, is_training, resize=True):
         update_collection = self._get_update_collection(is_training)

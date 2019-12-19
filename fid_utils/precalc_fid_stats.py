@@ -80,8 +80,7 @@ if __name__ == '__main__':
         # np.savez_compressed(output_path, mu=mu, sigma=sigma)
         n_batch = n_samples//batch_size
         for batch in tqdm(range(n_batch)):
-             images = np.array([image_loader(path) for path in image_list[batch*batch_size:(batch+1)*batch_size]]).astype(np.float32)
-             images = ((images + 1)*127.5).astype('uint8')
+             images = np.array([image_loader(path) for path in image_list[batch*batch_size:(batch+1)*batch_size]]).astype(np.uint8)
              batch_feature_map = fid.get_activations(images, sess, batch_size, False)
              feature_map[batch*batch_size:(batch+1)*batch_size] = batch_feature_map
         mu = np.mean(feature_map[:n_samples], axis=0)

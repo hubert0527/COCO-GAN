@@ -151,12 +151,12 @@ The following open-source repositories largely facilitate our research!
 ## Citation
 ```
 @inproceedings{lin2019cocogan,
-  author    = {Chieh Hubert Lin and
-               Chia{-}Che Chang and
-               Yu{-}Sheng Chen and
-               Da{-}Cheng Juan and
-               Wei Wei and
-               Hwann{-}Tzong Chen},
+  author    = {Lin, Chieh Hubert and
+               Chang, Chia{-}Che and
+               Chen, Yu{-}Sheng and
+               Juan, Da{-}Cheng and
+               Wei, Wei and
+               Chen, Hwann{-}Tzong},
   title     = {{COCO-GAN:} Generation by Parts via Conditional Coordinating},
   booktitle = {IEEE International Conference on Computer Vision (ICCV)},
   year      = {2019},

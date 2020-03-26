@@ -21,7 +21,7 @@ conda install tensorflow-gpu==1.13.1 scipy==1.1.0 pyyaml==5.3 pillow==6.0.0 tqdm
 
 You may directly disable FID calculation, or try to comment/uncomment different variants of `TensorShape` setting codes I used for different TF versions at `fid_utils/fid.py:86~89`.
 
-You may need to write your own if you face errors with TF version <1.5.0 or >1.11.0.
+You may need to write your own workaround if you face errors with other TF versions.
 
 ## 1. Data Download and Preprocessing
 

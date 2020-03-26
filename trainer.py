@@ -2,7 +2,10 @@ import os
 import time
 import tensorflow as tf
 import numpy as np
+from tqdm import trange
+from math import ceil, log
 from numpy import sin, cos
+from scipy.misc import imsave
 
 
 NO_REDUCTION = tf.losses.Reduction.NONE
@@ -78,7 +81,7 @@ class Trainer():
         return tf.reshape(extend_dup, [-1, ch])
 
 
-    def build_graph(self):
+    def build_graph(self, test_mode=False):
 
         # Input nodes
         # Note: the input node name was wrong in the checkpoint 
@@ -129,11 +132,14 @@ class Trainer():
             # if self.config["log_params"]["merge_micro_patches_in_cpu"]:
             (_, self.rec_full) = self.generate_full_image_gpu(self.z)
 
-        print(" [Build] Composing Loss Functions ")
-        self._compose_losses()
 
-        print(" [Build] Creating Optimizers ")
-        self._create_optimizers()
+        # Building these are time consuming
+        if not test_mode:
+            print(" [Build] Composing Loss Functions ")
+            self._compose_losses()
+
+            print(" [Build] Creating Optimizers ")
+            self._create_optimizers()
 
 
     def _calc_gradient_penalty(self):
@@ -326,6 +332,20 @@ class Trainer():
             ratio_over_micro=[num_patches_x, num_patches_y])
 
         return all_micro_patches, full_image
+
+    def test(self, n_samples, output_dir):
+        n_digits = ceil(log(n_samples, 10))
+        n_iters = n_samples // self.batch_size + 1
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        for i in trange(n_iters):
+            images = self.rand_sample_full_test()
+            for j in range(images.shape[0]):
+                global_id = i*self.batch_size + j
+                if global_id < n_samples:
+                    output_path = os.path.join(output_dir, "test_sample_{}.png".format(str(global_id).zfill(n_digits)))
+                    imsave(output_path, images[j])
+        
 
 
     def train(self, logger, evaluator, global_step):

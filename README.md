@@ -11,10 +11,13 @@ Authors' implementation of "COCO-GAN: Generation by Parts via Conditional Coordi
 
 ## 0. Pre-requirements
 ```
-Tensorflow==1.9.0~1.13.0
-```
+# Install the major required packages with
+conda install tensorflow-gpu==1.13.1 scipy==1.1.0 pyyaml==5.3 pillow==6.0.0 tqdm
 
-Note: Other Tensorflow versions may be applicable, but you may face some errors during the FID calculation.
+# Note: 
+# Recommended Tensorflow versions: 1.9.*~1.13.*
+# Other Tensorflow versions may be applicable, but you may face some errors during the FID calculation.
+```
 
 You may directly disable FID calculation, or try to comment/uncomment different variants of `TensorShape` setting codes I used for different TF versions at `fid_utils/fid.py:86~89`.
 
@@ -110,6 +113,17 @@ With the **Patch-Guided Image Generation**, we need to train an additional criti
 python main.py --config="./configs/CelebA_128x128_N2M2S64_PatchGuidedGeneration.yaml"
 ```
 
+## 5. Running Testing Only 
+
+**(Not well-tested)**
+**(You can skip step 1~5)**
+
+Suppose you have successfully adopted either the default path (specified in the yaml files) to save checkpoints or use `force_load_from_dir` to find checkpoints, you can run the following commands:
+```
+python main.py --config="./configs/CelebA_128x128_N2M2S64.yaml" --test
+```
+The testing codes also provides two arguments: `n_samples` and `test_output_dir`.
+
 ## Pretrained checkpoints
 
 We provide following pretrained checkpoints:
@@ -124,7 +138,21 @@ Please download them from: https://drive.google.com/drive/folders/1Mr5BknOrTebQg
 Then, you can use `force_load_from_dir: "path/to/the/pretrained/directory"` argument in each of the config file to load the parameters (this does not override the hyperparameters).
 
 Note:
-These models are trained with Tensorflow 1.13.0, you may potentially face some loading errors if you use other Tensorflow versions.
+1. These models are trained with Tensorflow 1.13.0, you may potentially face some loading errors if you use other Tensorflow versions.
+2. The structure of the checkpoint directory is:
+```
+./logs/
+  + <some exp A> (name that matches the `exp_name` in the yaml file, e.g., `CelebA_64x64_N2M2S32`)
+  |   +---ckpt/
+  |   |     +--- (place the downloaded checkpoint files here)
+  |   +---images/
+  |   +---(event logs)
+  |
+  + <some exp B>
+  |
+  .
+  .
+```
 
 ## Some Additional Notes
 - Some computers take forever to calculate FID, it is usually an unknown problem in the CPU, please switch a computer or disable FID calculation!

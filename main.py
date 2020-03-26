@@ -48,6 +48,11 @@ def precompute_parameters(config):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, required=True)
+
+    # testing arguments
+    parser.add_argument("--test", action="store_true", help="Run testing generation only.")
+    parser.add_argument("--n_samples", default=1024, help="Generate N sample in testing mode.")
+    parser.add_argument("--test_output_dir", default="./test_outputs/", help="Directory that will contain the generated images.")
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -79,7 +84,16 @@ if __name__ == "__main__":
     with tf.Session(config=sess_config) as sess:
 
         # Build TF records
-        real_images = DataLoader(config).build()
+        if args.test:
+            # Workaround, not used in testing
+            real_images = tf.zeros([
+                0,
+                config["data_params"]["full_image_size"][0],
+                config["data_params"]["full_image_size"][1],
+                config["data_params"]["c_dim"],
+            ], tf.float32) 
+        else:
+            real_images = DataLoader(config).build()
 
         # Create controllers
         trainer = Trainer(sess, config, real_images, 
@@ -89,12 +103,18 @@ if __name__ == "__main__":
         logger = Logger(sess, config, patch_handler)
 
         # Build graphs
-        print(" [Build] Constructing training graph...")
-        trainer.build_graph()
-        print(" [Build] Constructing evaluation graph...")
-        evaluator.build_graph()
-        print(" [Build] Constructing logging graph...")
-        logger.build_graph(trainer)
+        if args.test:
+            print(" [Build] Constructing training graph...")
+            trainer.build_graph(test_mode=True)
+            print(" [Build] Constructing logging graph...")
+            logger.build_graph(trainer, test_mode=True)
+        else:
+            print(" [Build] Constructing training graph...")
+            trainer.build_graph()
+            print(" [Build] Constructing evaluation graph...")
+            evaluator.build_graph()
+            print(" [Build] Constructing logging graph...")
+            logger.build_graph(trainer)
 
         # Initialize all variables
         sess.run(tf.local_variables_initializer())
@@ -105,7 +125,10 @@ if __name__ == "__main__":
         global_step = logger.load_ckpt()
 
         # Start training
-        trainer.train(logger, evaluator, global_step)
+        if args.test:
+            trainer.test(args.n_samples, args.test_output_dir)
+        else:
+            trainer.train(logger, evaluator, global_step)
         
 
 

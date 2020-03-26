@@ -119,18 +119,21 @@ class Logger():
         self.img_summaries = tf.summary.merge(img_summaries)
 
 
-    def build_graph(self, trainer):
-        self._build_numerical_summaries(trainer)
-        self._build_img_summaries(trainer)
-
-        if trainer.train_extrap:
-            # Extrap training has an additional Adam optimizer with parameters not existed in the ckpt
-            ckpt_dir = self.force_load_from_dir if self.force_load_from_dir else self.ckpt_dir
-            ckpt_vars = set([v[0] for v in tf.train.list_variables(ckpt_dir)])
-            restore_var = [v for v in tf.get_collection_ref(tf.GraphKeys.GLOBAL_VARIABLES) if v.op.name in ckpt_vars]
-            self.saver = tf.train.Saver(max_to_keep=3, var_list=restore_var)
-        else:
+    def build_graph(self, trainer, test_mode=False):
+        if test_mode:
             self.saver = tf.train.Saver(max_to_keep=3)
+        else:
+            self._build_numerical_summaries(trainer)
+            self._build_img_summaries(trainer)
+
+            if trainer.train_extrap:
+                # Extrap training has an additional Adam optimizer with parameters not existed in the ckpt
+                ckpt_dir = self.force_load_from_dir if self.force_load_from_dir else self.ckpt_dir
+                ckpt_vars = set([v[0] for v in tf.train.list_variables(ckpt_dir)])
+                restore_var = [v for v in tf.get_collection_ref(tf.GraphKeys.GLOBAL_VARIABLES) if v.op.name in ckpt_vars]
+                self.saver = tf.train.Saver(max_to_keep=3, var_list=restore_var)
+            else:
+                self.saver = tf.train.Saver(max_to_keep=3)
 
 
     def _check_step(self, step, step_config):

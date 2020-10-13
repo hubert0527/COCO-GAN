@@ -6,9 +6,6 @@ Authors' implementation of "COCO-GAN: Generation by Parts via Conditional Coordi
 [**\[Paper\]**](http://bit.ly/COCO-GAN)
 [**\[Paper (Full Resolution)\]**](http://bit.ly/COCO-GAN-full)
 
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/coco-gan-generation-by-parts-via-conditional/image-generation-on-celeba)](https://paperswithcode.com/sota/image-generation-on-celeba?p=coco-gan-generation-by-parts-via-conditional)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/coco-gan-generation-by-parts-via-conditional/image-generation-on-lsun-bedroom-256-x-256)](https://paperswithcode.com/sota/image-generation-on-lsun-bedroom-256-x-256?p=coco-gan-generation-by-parts-via-conditional)
-
 ## 0. Pre-requirements
 ```
 # Install the major required packages with
@@ -153,6 +150,13 @@ Note:
   .
   .
 ```
+
+## Some Tuning Tricks While Training on Custom Datasets
+(In cases you received NaN exceptions after running with the default hyperparameters)
+
+As you have seen, the adversarial loss values are quite magnificent in COCO-GAN training (from 1e4 to 1e8, depending on the complexity of the images in the dataset). The training is sometimes unstable. And gradient penalty plays an important role in stabilizing the training. And yes, you may need to tune the gradient penalty strength a bit if there are evidences of training instability, for instance, NaNs LOL. 
+
+In order to determine the appropriate gradient penalty strength, please open the tensorboard and look into your previous training logs. Go to histogram and open the `gp_slopes` pane. Long story short, we would like the constrain the mean of the distribution to near 1, which is also known as the 1-Lipchitz constraint. You may start to increase the `gp_lambda` in the config to pull the distribution toward zero a bit, just a bit, otherwise, your training will saturate when the gradients are way too small. Note that, in most cases, you only need to make sure the mean of `gp_lambda` is around 1~5 after 10K iterations, as the early stage is expectedly quite unstable.
 
 ## Some Additional Notes
 - Some computers take forever to calculate FID, it is usually an unknown problem in the CPU, please switch a computer or disable FID calculation!

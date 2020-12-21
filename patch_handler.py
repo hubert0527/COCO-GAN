@@ -71,7 +71,7 @@ class PatchHandler():
         num_patches = ratio_over_micro[0] * ratio_over_micro[1]
 
         # Step 1: micro patches -> stripes of images
-        merge_stage1 = tf.reshape(x, [-1, num_patches*self.micro_patch_size[0], self.micro_patch_size[1], 3])
+        merge_stage1 = tf.reshape(x, [-1, num_patches*self.micro_patch_size[0], self.micro_patch_size[1], self.c_dim])
         slices = []
         for i in range(ratio_over_micro[1]):
             slice_st = [0, self.micro_patch_size[0]*ratio_over_micro[0]*i, 0, 0]
